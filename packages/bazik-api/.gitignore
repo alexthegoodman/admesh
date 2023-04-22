@@ -1,0 +1,6 @@
+node_modules
+.env
+
+*.epub
+tempDir
+dist
