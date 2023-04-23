@@ -1,9 +1,9 @@
 import styles from "./page.module.scss";
 
-export const metadata = {
-  title: "Create Project",
-  description: "Create a new 3D project in Bazik",
-};
+// export const metadata = {
+//   title: "Create Project",
+//   description: "Create a new 3D project in Bazik",
+// };
 
 export default function Create() {
   return (
