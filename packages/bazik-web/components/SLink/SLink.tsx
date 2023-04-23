@@ -9,7 +9,9 @@ import { Link as SpectrumLink } from "@adobe/react-spectrum";
 const SLink: React.FC<SLinkProps> = ({ href = "", children = null }) => {
   return (
     <Link href={href} legacyBehavior>
-      <SpectrumLink>{children}</SpectrumLink>
+      <SpectrumLink UNSAFE_className={styles.spectrumLink}>
+        {children}
+      </SpectrumLink>
     </Link>
   );
 };

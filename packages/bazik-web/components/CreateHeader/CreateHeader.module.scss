@@ -1,1 +1,13 @@
-/** Styles **/
+.headerInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px #c7c7c7 solid;
+  border-right: 1px #c7c7c7 solid;
+  background-color: white;
+  padding: 0 15px;
+  width: calc(100% - 300px);
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
