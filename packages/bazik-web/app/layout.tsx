@@ -3,7 +3,10 @@ import "./globals.scss";
 import { Assistant } from "next/font/google";
 import AppProviders from "@/components/AppProviders/AppProviders";
 
-const assistant = Assistant({ subsets: ["latin"] });
+const assistant = Assistant({
+  subsets: ["latin"],
+  weight: ["300", "400", "600"],
+});
 
 // export const metadata = {
 //   title: "Bazik",
