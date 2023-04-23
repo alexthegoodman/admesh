@@ -6,8 +6,15 @@
 // };
 
 import { Button, Flex, Heading, View } from "@adobe/react-spectrum";
+import { useRouter } from "next/navigation";
 
 export default function Projects() {
+  const router = useRouter();
+
+  const handleCreateProject = () => {
+    router.push("/create");
+  };
+
   return (
     <View padding={100}>
       <View>
@@ -16,7 +23,9 @@ export default function Projects() {
             <Heading level={2}>Your Projects</Heading>
           </View>
           <View>
-            <Button variant="primary">Create Project</Button>
+            <Button variant="primary" onPress={handleCreateProject}>
+              Create Project
+            </Button>
           </View>
         </Flex>
       </View>
