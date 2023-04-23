@@ -11,3 +11,12 @@
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
 }
+
+.sideHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 50px;
+  gap: 15px;
+  width: 300px;
+}

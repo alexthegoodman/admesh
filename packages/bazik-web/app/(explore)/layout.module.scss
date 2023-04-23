@@ -1,9 +1,11 @@
+@import "../variables.scss";
+
 .headerInner {
   position: relative;
   display: flex;
   align-items: center;
   height: 60px;
-  border-bottom: 1px #c7c7c7 solid;
+  border-bottom: 1px $lightGrey solid;
   padding-left: 100px;
   background-color: white;
 }

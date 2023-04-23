@@ -1,6 +1,6 @@
 "use client";
 
-import { Header, View } from "@adobe/react-spectrum";
+import { Flex, Header, View } from "@adobe/react-spectrum";
 import styles from "./page.module.scss";
 import CreateHeader from "@/components/CreateHeader/CreateHeader";
 import CreateTools from "@/components/CreateTools/CreateTools";
@@ -16,13 +16,16 @@ export default function Create() {
   return (
     <>
       <CreateHeader />
-      <View>
-        <CreateTools />
-        <View>
-          <SceneView />
-        </View>
-        <CreateProperties />
-      </View>
+
+      <Flex direction="row" flex="1">
+        <div className={styles.createInner}>
+          <CreateTools />
+          <div className={styles.sceneViewWrapper}>
+            <SceneView />
+          </div>
+          <CreateProperties />
+        </div>
+      </Flex>
     </>
   );
 }

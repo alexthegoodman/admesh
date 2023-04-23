@@ -1,1 +1,14 @@
-/** Styles **/
+@import "../../app/variables.scss";
+
+.createPropertiesInner {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 375px;
+  height: 100%;
+  padding: 0 20px;
+  border-top-left-radius: 150px;
+  padding: 50px 0px 0px 50px;
+  border-left: 1px $lightGrey solid;
+  border-top: 1px $lightGrey solid;
+}
