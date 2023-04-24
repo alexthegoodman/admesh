@@ -7,7 +7,12 @@ export enum Geometry {
 }
 
 export interface Entity {
+  id: string;
   geometry: Geometry;
+  content?: string;
+  size?: number;
+  thickness?: number;
+  color?: string;
 }
 
 export interface EditorContextState {

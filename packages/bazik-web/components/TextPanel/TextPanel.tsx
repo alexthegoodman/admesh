@@ -9,17 +9,22 @@ import {
   useEditorContext,
 } from "@/context/EditorContext/EditorContext";
 import { Button } from "@adobe/react-spectrum";
+import { generateUUID } from "three/src/math/MathUtils";
 
 const TextPanel: React.FC<TextPanelProps> = () => {
   const [{ entities }, dispatch] = useEditorContext();
 
   const handleAddText = () => {
     const newEntity: Entity = {
-      // id: null,
+      id: generateUUID(),
       geometry: Geometry.text,
+      content: "My New Text",
+      size: 50,
+      thickness: 10,
+      color: "hotpink",
     };
 
-    console.info("handleAddText", newEntity, entities);
+    // console.info("handleAddText", newEntity, entities);
 
     dispatch({ key: "entities", value: [newEntity, ...entities] });
   };

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.26.0",
+    "@react-spectrum/color": "^3.0.0-beta.21",
+    "@react-stately/color": "^3.3.1",
     "@react-three/drei": "^9.65.5",
     "@react-three/fiber": "^8.12.2",
     "@spectrum-icons/workflow": "^4.2.0",

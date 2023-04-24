@@ -12,8 +12,21 @@ import {
   Geometry,
   useEditorContext,
 } from "@/context/EditorContext/EditorContext";
+import { Euler, EulerOrder, Vector3 } from "three";
 
-const Mesh = ({ pos = undefined, rotation = undefined, geometry = "box" }) => {
+interface MeshProps {
+  pos?: [x: number, y: number, z: number];
+  rotation?: [x: number, y: number, z: number];
+  entity: Entity;
+  setSelectedEntity: any;
+}
+
+const Mesh = ({
+  pos = undefined,
+  rotation = undefined,
+  entity,
+  setSelectedEntity,
+}: MeshProps) => {
   // This reference gives us direct access to the THREE.Mesh object
   const ref = React.useRef();
   // Hold state for hovered and clicked events
@@ -23,35 +36,40 @@ const Mesh = ({ pos = undefined, rotation = undefined, geometry = "box" }) => {
   // useFrame((state, delta) => (ref.current.rotation.x += delta));
   // Return the view, these are regular Threejs elements expressed in JSX
 
+  const handleMeshClick = () => {
+    setSelectedEntity(entity.id);
+  };
+
   const material = (
     <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
   );
 
   const meshProps = {
+    key: entity.id,
     position: pos,
     rotation: rotation,
     // ref: ref,
     // scale={clicked ? 1.5 : 1}
-    // onClick={(event) => click(!clicked)}
-    onPointerOver: (event) => hover(true),
-    onPointerOut: (event) => hover(false),
+    onClick: handleMeshClick,
+    onPointerOver: () => hover(true),
+    onPointerOut: () => hover(false),
   };
 
   return (
     <>
-      {geometry === Geometry.box && (
+      {entity.geometry === Geometry.box && (
         <Box args={[1, 1, 1]} {...meshProps}>
           {material}
         </Box>
       )}
-      {geometry === Geometry.cone && (
+      {entity.geometry === Geometry.cone && (
         <Cone args={[1, 5, 30]} {...meshProps}>
           {material}
         </Cone>
       )}
-      {geometry === Geometry.text && (
+      {entity.geometry === Geometry.text && (
         <Text3D font={"./Lobster_Regular.json"} {...meshProps}>
-          My Text Here
+          {entity.content}
           {material}
         </Text3D>
       )}
@@ -59,24 +77,34 @@ const Mesh = ({ pos = undefined, rotation = undefined, geometry = "box" }) => {
   );
 };
 
-function MeshEntity({ controls, position, ...props }) {
+interface MeshEntityProps extends MeshProps {
+  controls: boolean;
+  position: [x: number, y: number, z: number];
+}
+
+function MeshEntity({ controls, position, ...props }: MeshEntityProps) {
   if (controls) {
     return (
       <TransformControls mode="translate" position={position}>
-        <Mesh {...props} />
+        <Mesh {...(props as any)} />
       </TransformControls>
     );
   } else {
     return (
       <>
-        <Mesh pos={position} {...props} />
+        <Mesh pos={position} {...(props as any)} />
       </>
     );
   }
 }
 
 const SceneView: React.FC<SceneViewProps> = () => {
-  const [{ entities }, dispatch] = useEditorContext();
+  const [{ selectedEntity, entities }, dispatch] = useEditorContext();
+  // const [selectedEntity, setSelectedEntity] = React.useState(null);
+
+  const setSelectedEntity = (entityId: string) => {
+    dispatch({ key: "selectedEntity", value: entityId });
+  };
 
   // TODO: PresentationControls ?
   // Effects from EffectComposer?
@@ -85,7 +113,7 @@ const SceneView: React.FC<SceneViewProps> = () => {
     <Canvas>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      <MeshEntity
+      {/* <MeshEntity
         geometry={Geometry.box}
         controls={false}
         position={[-1.2, 0, 0]}
@@ -95,13 +123,14 @@ const SceneView: React.FC<SceneViewProps> = () => {
         controls={true}
         position={[4, 0, -10]}
         rotation={[100, 120, 100]}
-      />
+      /> */}
       {entities?.map((entity: Entity) => {
         return (
           <MeshEntity
-            geometry={entity.geometry}
-            controls={false}
+            controls={selectedEntity === entity.id ? true : false}
             position={[4, 0, -10]}
+            entity={entity}
+            setSelectedEntity={setSelectedEntity}
           />
         );
       })}
