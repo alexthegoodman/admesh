@@ -1,0 +1,48 @@
+@import "../../app/variables";
+
+.toolNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 125px;
+  border-bottom: 1px $lightGrey solid;
+
+  &:hover {
+    background-color: $lighterGrey;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a4a4a;
+  }
+}
+
+.sidepanel {
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 125px;
+  height: calc(100vh - 60px);
+  padding: 0;
+  border-right: 1px $lightGrey solid;
+  z-index: 100;
+}
+
+.panelInner {
+  padding: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
