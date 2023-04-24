@@ -9,6 +9,8 @@ import Image from "@spectrum-icons/workflow/Image";
 import Shapes from "@spectrum-icons/workflow/Shapes";
 import CreateTool from "../CreateTool/CreateTool";
 import { useCycle } from "framer-motion";
+import { useEditorContext } from "@/context/EditorContext/EditorContext";
+import TextPanel from "../TextPanel/TextPanel";
 
 const CreateTools: React.FC<CreateToolsProps> = () => {
   const [openTool, setOpenTool] = React.useState<string | null>(null);
@@ -70,12 +72,8 @@ const CreateTools: React.FC<CreateToolsProps> = () => {
           label="Text"
           open={tool1Open}
           handleToolNav={handleToolNav}
-          sidebarContent1={
-            <>
-              <Button variant="cta">Add text</Button>
-            </>
-          }
-          sidebarContent2={<>Decorative Text Coming Soon</>}
+          sidebarContent1={<TextPanel />}
+          sidebarContent2={<>Decorative Text Library Coming Soon</>}
         />
 
         <CreateTool

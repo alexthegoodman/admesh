@@ -1,25 +1,35 @@
 import React, { useState, useReducer, Dispatch } from "react";
 
+export enum Geometry {
+  text = "TEXT",
+  box = "BOX",
+  cone = "CONE",
+}
+
+export interface Entity {
+  geometry: Geometry;
+}
+
 export interface EditorContextState {
-  editorTitle: string;
+  entities: Entity[] | null;
 }
 
 export const EditorContextState = {
-  editorTitle: "",
+  entities: [],
 };
 
 export const EditorContextReducer = (
   state: EditorContextState,
   action: any
 ) => {
-  switch (action.type) {
+  switch (action.key) {
     // case value:
     //   break;
 
     default:
       return {
         ...state,
-        [action.type]: action.payload,
+        [action.key]: action.value,
       };
       break;
   }
@@ -30,4 +40,4 @@ export const EditorContext = React.createContext<
 >([EditorContextState, () => undefined]);
 
 export const useEditorContext = () =>
-  React.useContext(EditorContext) as unknown as Iterable<any>;
+  React.useContext(EditorContext) as unknown as any;

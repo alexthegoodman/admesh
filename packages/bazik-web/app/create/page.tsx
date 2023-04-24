@@ -6,6 +6,12 @@ import CreateHeader from "@/components/CreateHeader/CreateHeader";
 import CreateTools from "@/components/CreateTools/CreateTools";
 import SceneView from "@/components/SceneView/SceneView";
 import CreateProperties from "@/components/CreateProperties/CreateProperties";
+import {
+  EditorContext,
+  EditorContextReducer,
+  EditorContextState,
+} from "@/context/EditorContext/EditorContext";
+import { useReducer } from "react";
 
 // export const metadata = {
 //   title: "Create Project",
@@ -15,17 +21,21 @@ import CreateProperties from "@/components/CreateProperties/CreateProperties";
 export default function Create() {
   return (
     <>
-      <CreateHeader />
+      <EditorContext.Provider
+        value={useReducer(EditorContextReducer, EditorContextState)}
+      >
+        <CreateHeader />
 
-      <Flex direction="row" flex="1">
-        <div className={styles.createInner}>
-          <CreateTools />
-          <div className={styles.sceneViewWrapper}>
-            <SceneView />
+        <Flex direction="row" flex="1">
+          <div className={styles.createInner}>
+            <CreateTools />
+            <div className={styles.sceneViewWrapper}>
+              <SceneView />
+            </div>
+            <CreateProperties />
           </div>
-          <CreateProperties />
-        </div>
-      </Flex>
+        </Flex>
+      </EditorContext.Provider>
     </>
   );
 }
