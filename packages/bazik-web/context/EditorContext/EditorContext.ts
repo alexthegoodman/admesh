@@ -28,6 +28,7 @@ export const EditorContextState = {
   selectedEntity: null,
   entities: [],
   transformMode: "translate",
+  sceneRotation: 0, // degrees
 };
 
 export const EditorContextReducer = (

@@ -5,8 +5,14 @@ import * as React from "react";
 import styles from "./SceneView.module.scss";
 
 import { SceneViewProps } from "./SceneView.d";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Box, Cone, Text3D, TransformControls } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  Box,
+  Cone,
+  PerspectiveCamera,
+  Text3D,
+  TransformControls,
+} from "@react-three/drei";
 import {
   Entity,
   Geometry,
@@ -26,7 +32,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 interface MeshProps {
   // position?: [x: number, y: number, z: number];
   // rotation?: [x: number, y: number, z: number];
-  setTransforms: boolean;
+  setTransforms?: boolean;
   entity: Entity;
   setSelectedEntity: any;
 }
@@ -39,7 +45,7 @@ const Mesh = ({
   setSelectedEntity,
 }: MeshProps) => {
   // This reference gives us direct access to the THREE.Mesh object
-  const ref = React.useRef();
+  const ref = React.useRef<any>();
   // Hold state for hovered and clicked events
   const [hovered, hover] = React.useState(false);
   // const [clicked, click] = React.useState(false);
@@ -150,10 +156,37 @@ function MeshEntity({ controls, transformMode, ...props }: MeshEntityProps) {
   }
 }
 
+const ControlledCamera = () => {
+  const cameraRef = React.useRef();
+  const { scene } = useThree();
+  const [{ sceneRotation }, dispatch] = useEditorContext();
+
+  const testSpeed = -0.1;
+
+  React.useEffect(() => {
+    if (cameraRef.current) {
+      const camera = cameraRef.current as any;
+
+      console.info("camera", camera);
+
+      var x = camera.position.x;
+      var z = camera.position.z;
+      // TODO: save to state?
+      camera.position.x = x * Math.cos(testSpeed) + z * Math.sin(testSpeed);
+      camera.position.z = z * Math.cos(testSpeed) - x * Math.sin(testSpeed);
+      camera.lookAt(scene.position);
+    }
+  }, [sceneRotation]);
+
+  return (
+    <PerspectiveCamera ref={cameraRef} position={[0, -3, 20]} makeDefault />
+  );
+};
+
 const SceneView: React.FC<SceneViewProps> = () => {
   const [{ selectedEntity, entities, transformMode }, dispatch] =
     useEditorContext();
-  // const [selectedEntity, setSelectedEntity] = React.useState(null);
+  // useFrame((state, delta) => console.info("useFrame", state, delta));
 
   // console.info("entities", entities);
 
@@ -161,24 +194,12 @@ const SceneView: React.FC<SceneViewProps> = () => {
     dispatch({ key: "selectedEntity", value: entityId });
   };
 
-  // TODO: PresentationControls ?
-  // Effects from EffectComposer?
-
   return (
     <Canvas>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      {/* <MeshEntity
-        geometry={Geometry.box}
-        controls={false}
-        position={[-1.2, 0, 0]}
-      />
-      <MeshEntity
-        geometry={Geometry.cone}
-        controls={true}
-        position={[4, 0, -10]}
-        rotation={[100, 120, 100]}
-      /> */}
+      <ControlledCamera />
+
       {entities?.map((entity: Entity) => {
         const updateEntityProperties = (object: any) => {
           let newEntities = entities;
