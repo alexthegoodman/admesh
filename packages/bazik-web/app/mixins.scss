@@ -1,0 +1,25 @@
+@import "./variables.scss";
+
+@mixin desktopDown {
+  @media screen and (max-width: $desktopWidth) {
+    @content;
+  }
+}
+
+@mixin midDown {
+  @media screen and (max-width: $midWidth) {
+    @content;
+  }
+}
+
+@mixin tabletDown {
+  @media screen and (max-width: $tabletWidth) {
+    @content;
+  }
+}
+
+@mixin mobileDown {
+  @media screen and (max-width: $mobileWidth) {
+    @content;
+  }
+}

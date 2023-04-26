@@ -1,0 +1,7 @@
+"use client";
+
+import AuthForm from "@/components/AuthForm/AuthForm";
+
+export default function SignUp() {
+  return <AuthForm type="signup" />;
+}

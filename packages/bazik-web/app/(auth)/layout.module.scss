@@ -1,0 +1,29 @@
+@import "../mixins.scss";
+
+.authImage {
+  width: 65vw;
+  height: 100vh;
+
+  @include desktopDown {
+    width: 55vw;
+  }
+  @include tabletDown {
+    display: none;
+  }
+}
+
+.authFormWrapper {
+  width: 35vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @include desktopDown {
+    width: 45vw;
+  }
+  @include tabletDown {
+    width: 100%;
+  }
+}
