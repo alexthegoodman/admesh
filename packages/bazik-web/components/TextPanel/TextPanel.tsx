@@ -19,6 +19,8 @@ const TextPanel: React.FC<TextPanelProps> = () => {
       id: generateUUID(),
       geometry: Geometry.text,
       position: [4, 0, -10],
+      rotation: [100, 120, 100],
+      scale: [1, 1, 2],
       content: "My New Text",
       size: 1,
       thickness: 1,

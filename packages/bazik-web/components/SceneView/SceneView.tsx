@@ -24,15 +24,17 @@ import { useDebounce } from "@/hooks/useDebounce";
 // } from "three";
 
 interface MeshProps {
-  pos?: [x: number, y: number, z: number];
-  rotation?: [x: number, y: number, z: number];
+  // position?: [x: number, y: number, z: number];
+  // rotation?: [x: number, y: number, z: number];
+  setTransforms: boolean;
   entity: Entity;
   setSelectedEntity: any;
 }
 
 const Mesh = ({
-  pos = undefined,
-  rotation = undefined,
+  // pos = undefined,
+  // rotation = undefined,
+  setTransforms,
   entity,
   setSelectedEntity,
 }: MeshProps) => {
@@ -53,16 +55,24 @@ const Mesh = ({
     <meshStandardMaterial color={hovered ? "hotpink" : entity.color} />
   );
 
+  let transforms = {};
+  if (setTransforms) {
+    transforms = {
+      position: entity.position,
+      rotation: entity.rotation,
+      scale: entity.scale,
+    };
+  }
+
   const meshProps = {
     key: entity.id,
-    position: pos,
-    rotation: rotation,
     ref: ref,
     // scale={clicked ? 1.5 : 1}
     onClick: handleMeshClick,
     onPointerOver: () => hover(true),
     onPointerOut: () => hover(false),
     // onChange: (e) => console.info("onChange 1", e.target.object),
+    ...transforms,
   };
 
   return (
@@ -94,41 +104,47 @@ const Mesh = ({
 
 interface MeshEntityProps extends MeshProps {
   controls: boolean;
-  updateEntityProperty: any;
+  updateEntityProperties: any;
   transformMode: "translate" | "rotate" | "scale";
   // position: [x: number, y: number, z: number];
 }
 
 function MeshEntity({ controls, transformMode, ...props }: MeshEntityProps) {
   if (controls) {
+    // console.info("MeshEntity", props.entity.position);
     return (
       <TransformControls
         // ref={ref}
         mode={transformMode}
         position={props.entity.position}
+        rotation={props.entity.rotation}
+        scale={props.entity.scale}
         // onChange={}
         // onObjectChange={(e) => console.info("onObjectChange", e.target)}
         // onUpdate={(e) => console.info("onUpdate", e.target)}
         onMouseUp={(e: any) => {
           const position = e.target.object?.position;
-          if (position) {
-            console.info("onMouseUp", position);
+          const rotation = e.target.object?.rotation;
+          const scale = e.target.object?.scale;
 
-            props.updateEntityProperty("position", [
-              position.x,
-              position.y,
-              position.z,
-            ]);
+          // console.info("onMouseUp", e.target.object, position, rotation, scale);
+
+          if (position && rotation && scale) {
+            props.updateEntityProperties({
+              position: [position.x, position.y, position.z],
+              rotation: [rotation.x, rotation.y, rotation.z],
+              scale: [scale.x, scale.y, scale.z],
+            });
           }
         }}
       >
-        <Mesh {...(props as any)} />
+        <Mesh setTransforms={false} {...(props as any)} />
       </TransformControls>
     );
   } else {
     return (
       <>
-        <Mesh pos={props.entity.position} {...(props as any)} />
+        <Mesh setTransforms={true} {...(props as any)} />
       </>
     );
   }
@@ -139,22 +155,10 @@ const SceneView: React.FC<SceneViewProps> = () => {
     useEditorContext();
   // const [selectedEntity, setSelectedEntity] = React.useState(null);
 
+  // console.info("entities", entities);
+
   const setSelectedEntity = (entityId: string) => {
     dispatch({ key: "selectedEntity", value: entityId });
-  };
-
-  const updateEntityProperty = (key: string, value: any) => {
-    const newEntities = entities.map((entity: Entity) => {
-      if (entity.id === selectedEntity) {
-        return {
-          ...entity,
-          [key]: value,
-        };
-      }
-      return entity;
-    });
-
-    dispatch({ key: "entities", value: newEntities });
   };
 
   // TODO: PresentationControls ?
@@ -176,13 +180,34 @@ const SceneView: React.FC<SceneViewProps> = () => {
         rotation={[100, 120, 100]}
       /> */}
       {entities?.map((entity: Entity) => {
+        const updateEntityProperties = (object: any) => {
+          let newEntities = entities;
+          Object.keys(object).forEach((key) => {
+            const value = object[key];
+
+            newEntities = newEntities.map((ent: Entity) => {
+              if (ent.id === entity.id) {
+                return {
+                  ...ent,
+                  [key]: value,
+                };
+              }
+              return ent;
+            });
+          });
+
+          // console.info("set prop", newEntities);
+
+          dispatch({ key: "entities", value: newEntities });
+        };
+
         return (
           <MeshEntity
             controls={selectedEntity === entity.id ? true : false}
             // position={[4, 0, -10]}
             entity={entity}
             setSelectedEntity={setSelectedEntity}
-            updateEntityProperty={updateEntityProperty}
+            updateEntityProperties={updateEntityProperties}
             transformMode={transformMode}
           />
         );

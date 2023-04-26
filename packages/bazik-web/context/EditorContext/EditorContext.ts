@@ -10,6 +10,8 @@ export interface Entity {
   id: string;
   geometry: Geometry;
   position: [number, number, number];
+  rotation: [number, number, number];
+  scale: [number, number, number];
   content?: string;
   size?: number;
   thickness?: number;
@@ -32,6 +34,7 @@ export const EditorContextReducer = (
   state: EditorContextState,
   action: any
 ) => {
+  // console.info("EditorContextReducer", action);
   switch (action.key) {
     // case value:
     //   break;
