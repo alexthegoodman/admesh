@@ -17,11 +17,15 @@ export interface Entity {
 }
 
 export interface EditorContextState {
+  selectedEntity: string | null;
   entities: Entity[] | null;
+  transformMode: "translate" | "rotate" | "scale";
 }
 
 export const EditorContextState = {
+  selectedEntity: null,
   entities: [],
+  transformMode: "translate",
 };
 
 export const EditorContextReducer = (

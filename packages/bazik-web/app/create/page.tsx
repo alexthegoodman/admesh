@@ -12,6 +12,7 @@ import {
   EditorContextState,
 } from "@/context/EditorContext/EditorContext";
 import { useReducer } from "react";
+import SceneCtrls from "@/components/SceneCtrls/SceneCtrls";
 
 // export const metadata = {
 //   title: "Create Project",
@@ -30,6 +31,7 @@ export default function Create() {
           <div className={styles.createInner}>
             <CreateTools />
             <div className={styles.sceneViewWrapper}>
+              <SceneCtrls />
               <SceneView />
             </div>
             <CreateProperties />

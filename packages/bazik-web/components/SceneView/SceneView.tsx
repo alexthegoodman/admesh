@@ -95,15 +95,16 @@ const Mesh = ({
 interface MeshEntityProps extends MeshProps {
   controls: boolean;
   updateEntityProperty: any;
+  transformMode: "translate" | "rotate" | "scale";
   // position: [x: number, y: number, z: number];
 }
 
-function MeshEntity({ controls, ...props }: MeshEntityProps) {
+function MeshEntity({ controls, transformMode, ...props }: MeshEntityProps) {
   if (controls) {
     return (
       <TransformControls
         // ref={ref}
-        mode="translate"
+        mode={transformMode}
         position={props.entity.position}
         // onChange={}
         // onObjectChange={(e) => console.info("onObjectChange", e.target)}
@@ -134,7 +135,8 @@ function MeshEntity({ controls, ...props }: MeshEntityProps) {
 }
 
 const SceneView: React.FC<SceneViewProps> = () => {
-  const [{ selectedEntity, entities }, dispatch] = useEditorContext();
+  const [{ selectedEntity, entities, transformMode }, dispatch] =
+    useEditorContext();
   // const [selectedEntity, setSelectedEntity] = React.useState(null);
 
   const setSelectedEntity = (entityId: string) => {
@@ -181,6 +183,7 @@ const SceneView: React.FC<SceneViewProps> = () => {
             entity={entity}
             setSelectedEntity={setSelectedEntity}
             updateEntityProperty={updateEntityProperty}
+            transformMode={transformMode}
           />
         );
       })}
