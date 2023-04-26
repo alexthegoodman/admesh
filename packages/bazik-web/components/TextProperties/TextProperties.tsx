@@ -56,10 +56,21 @@ const TextProperties: React.FC<TextPropertiesProps> = ({ entity }) => {
             </Item>
           </Picker>
           <Flex direction="row" gap="size-200">
-            <NumberField label="Size" />
-            <NumberField label="Thickness" />
+            <NumberField
+              label="Size"
+              value={entity.size}
+              onChange={(value) => updateEntityProperty("size", value)}
+            />
+            <NumberField
+              label="Thickness"
+              value={entity.thickness}
+              onChange={(value) => updateEntityProperty("thickness", value)}
+            />
           </Flex>
-          <ColorPicker />
+          <ColorPicker
+            value={entity.color}
+            onChange={(value) => updateEntityProperty("color", value)}
+          />
         </Flex>
       </Form>
     </div>

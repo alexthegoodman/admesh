@@ -41,7 +41,7 @@ const Mesh = ({
   };
 
   const material = (
-    <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+    <meshStandardMaterial color={hovered ? "hotpink" : entity.color} />
   );
 
   const meshProps = {
@@ -68,7 +68,12 @@ const Mesh = ({
         </Cone>
       )}
       {entity.geometry === Geometry.text && (
-        <Text3D font={"./Lobster_Regular.json"} {...meshProps}>
+        <Text3D
+          font={"./Lobster_Regular.json"}
+          size={entity.size}
+          height={entity.thickness}
+          {...meshProps}
+        >
           {entity.content}
           {material}
         </Text3D>

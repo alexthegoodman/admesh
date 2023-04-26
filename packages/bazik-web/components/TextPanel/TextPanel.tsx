@@ -19,9 +19,9 @@ const TextPanel: React.FC<TextPanelProps> = () => {
       id: generateUUID(),
       geometry: Geometry.text,
       content: "My New Text",
-      size: 50,
-      thickness: 10,
-      color: "hotpink",
+      size: 1,
+      thickness: 1,
+      color: "#FF0000",
     };
 
     // console.info("handleAddText", newEntity, entities);

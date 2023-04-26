@@ -7,9 +7,14 @@ import { Flex, Grid, View } from "@adobe/react-spectrum";
 import { ColorArea, ColorSlider, ColorWheel } from "@react-spectrum/color";
 import { parseColor } from "@react-stately/color";
 
-const ColorPicker: React.FC<ColorPickerProps> = () => {
+const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange }) => {
   let [color, setColor] = React.useState(parseColor("hsl(50, 100%, 50%)"));
   let [, saturationChannel, lightnessChannel] = color.getColorChannels();
+
+  React.useEffect(() => {
+    onChange(color.toString("rgba"));
+  }, [color]);
+
   return (
     <fieldset style={{ border: 0 }}>
       <legend>Color Picker</legend>
@@ -25,6 +30,7 @@ const ColorPicker: React.FC<ColorPickerProps> = () => {
             <ColorArea
               xChannel={saturationChannel}
               yChannel={lightnessChannel}
+              defaultValue={value}
               value={color}
               onChange={setColor}
               size="size-1200"
