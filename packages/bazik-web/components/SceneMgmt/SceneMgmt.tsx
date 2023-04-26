@@ -13,7 +13,7 @@ const SceneMgmt: React.FC<SceneMgmtProps> = () => {
     <section className={styles.sceneMgmt}>
       <View
         backgroundColor="static-white"
-        padding="size-50"
+        padding="size-100"
         borderRadius="large"
         borderColor="static-gray-500"
         borderWidth="thin"

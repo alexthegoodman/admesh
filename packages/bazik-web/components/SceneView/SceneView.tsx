@@ -161,19 +161,25 @@ const ControlledCamera = () => {
   const { scene } = useThree();
   const [{ sceneRotation }, dispatch] = useEditorContext();
 
+  const testRotation = sceneRotation / 60;
   const testSpeed = -0.1;
 
   React.useEffect(() => {
     if (cameraRef.current) {
       const camera = cameraRef.current as any;
 
-      console.info("camera", camera);
+      // console.info("camera", camera);
 
-      var x = camera.position.x;
-      var z = camera.position.z;
+      // var x = camera.position.x;
+      // var z = camera.position.z;
+      // relative to origin to calculate position because testRotation is total value not speed per render
+      var x = 1;
+      var z = 20;
       // TODO: save to state?
-      camera.position.x = x * Math.cos(testSpeed) + z * Math.sin(testSpeed);
-      camera.position.z = z * Math.cos(testSpeed) - x * Math.sin(testSpeed);
+      camera.position.x =
+        x * Math.cos(testRotation) + z * Math.sin(testRotation);
+      camera.position.z =
+        z * Math.cos(testRotation) - x * Math.sin(testRotation);
       camera.lookAt(scene.position);
     }
   }, [sceneRotation]);
