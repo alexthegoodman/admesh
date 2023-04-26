@@ -18,6 +18,7 @@ const TextPanel: React.FC<TextPanelProps> = () => {
     const newEntity: Entity = {
       id: generateUUID(),
       geometry: Geometry.text,
+      position: [4, 0, -10],
       content: "My New Text",
       size: 1,
       thickness: 1,

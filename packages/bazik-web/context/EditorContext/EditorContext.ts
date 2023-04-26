@@ -9,6 +9,7 @@ export enum Geometry {
 export interface Entity {
   id: string;
   geometry: Geometry;
+  position: [number, number, number];
   content?: string;
   size?: number;
   thickness?: number;

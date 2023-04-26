@@ -12,7 +12,16 @@ import {
   Geometry,
   useEditorContext,
 } from "@/context/EditorContext/EditorContext";
-import { Euler, EulerOrder, Vector3 } from "three";
+import { Vector3 } from "three";
+import { useDebounce } from "@/hooks/useDebounce";
+// import {
+//   BufferGeometry,
+//   Euler,
+//   EulerOrder,
+//   Material,
+//   Mesh,
+//   Vector3,
+// } from "three";
 
 interface MeshProps {
   pos?: [x: number, y: number, z: number];
@@ -48,11 +57,12 @@ const Mesh = ({
     key: entity.id,
     position: pos,
     rotation: rotation,
-    // ref: ref,
+    ref: ref,
     // scale={clicked ? 1.5 : 1}
     onClick: handleMeshClick,
     onPointerOver: () => hover(true),
     onPointerOut: () => hover(false),
+    // onChange: (e) => console.info("onChange 1", e.target.object),
   };
 
   return (
@@ -84,20 +94,40 @@ const Mesh = ({
 
 interface MeshEntityProps extends MeshProps {
   controls: boolean;
-  position: [x: number, y: number, z: number];
+  updateEntityProperty: any;
+  // position: [x: number, y: number, z: number];
 }
 
-function MeshEntity({ controls, position, ...props }: MeshEntityProps) {
+function MeshEntity({ controls, ...props }: MeshEntityProps) {
   if (controls) {
     return (
-      <TransformControls mode="translate" position={position}>
+      <TransformControls
+        // ref={ref}
+        mode="translate"
+        position={props.entity.position}
+        // onChange={}
+        // onObjectChange={(e) => console.info("onObjectChange", e.target)}
+        // onUpdate={(e) => console.info("onUpdate", e.target)}
+        onMouseUp={(e: any) => {
+          const position = e.target.object?.position;
+          if (position) {
+            console.info("onMouseUp", position);
+
+            props.updateEntityProperty("position", [
+              position.x,
+              position.y,
+              position.z,
+            ]);
+          }
+        }}
+      >
         <Mesh {...(props as any)} />
       </TransformControls>
     );
   } else {
     return (
       <>
-        <Mesh pos={position} {...(props as any)} />
+        <Mesh pos={props.entity.position} {...(props as any)} />
       </>
     );
   }
@@ -109,6 +139,20 @@ const SceneView: React.FC<SceneViewProps> = () => {
 
   const setSelectedEntity = (entityId: string) => {
     dispatch({ key: "selectedEntity", value: entityId });
+  };
+
+  const updateEntityProperty = (key: string, value: any) => {
+    const newEntities = entities.map((entity: Entity) => {
+      if (entity.id === selectedEntity) {
+        return {
+          ...entity,
+          [key]: value,
+        };
+      }
+      return entity;
+    });
+
+    dispatch({ key: "entities", value: newEntities });
   };
 
   // TODO: PresentationControls ?
@@ -133,9 +177,10 @@ const SceneView: React.FC<SceneViewProps> = () => {
         return (
           <MeshEntity
             controls={selectedEntity === entity.id ? true : false}
-            position={[4, 0, -10]}
+            // position={[4, 0, -10]}
             entity={entity}
             setSelectedEntity={setSelectedEntity}
+            updateEntityProperty={updateEntityProperty}
           />
         );
       })}
