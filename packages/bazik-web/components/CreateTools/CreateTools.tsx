@@ -11,6 +11,7 @@ import CreateTool from "../CreateTool/CreateTool";
 import { useCycle } from "framer-motion";
 import { useEditorContext } from "@/context/EditorContext/EditorContext";
 import TextPanel from "../TextPanel/TextPanel";
+import ShapePanel from "../ShapePanel/ShapePanel";
 
 const CreateTools: React.FC<CreateToolsProps> = () => {
   const [openTool, setOpenTool] = React.useState<string | null>(null);
@@ -92,8 +93,8 @@ const CreateTools: React.FC<CreateToolsProps> = () => {
           label="Shapes"
           open={tool3Open}
           handleToolNav={handleToolNav}
-          sidebarContent1={<>Shapes 1</>}
-          sidebarContent2={<>Content 2</>}
+          sidebarContent1={<ShapePanel />}
+          sidebarContent2={<>Exotic Shape Library Coming Soon</>}
         />
       </div>
     </View>

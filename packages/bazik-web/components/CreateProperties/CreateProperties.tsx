@@ -10,6 +10,7 @@ import {
   useEditorContext,
 } from "@/context/EditorContext/EditorContext";
 import TextProperties from "../TextProperties/TextProperties";
+import ShapeProperties from "../ShapeProperties/ShapeProperties";
 
 const CreateProperties: React.FC<CreatePropertiesProps> = () => {
   const [{ selectedEntity, entities }, dispatch] = useEditorContext();
@@ -23,6 +24,9 @@ const CreateProperties: React.FC<CreatePropertiesProps> = () => {
       <div className={styles.createPropertiesInner}>
         {entityData?.geometry === Geometry.text ? (
           <TextProperties entity={entityData} />
+        ) : entityData?.geometry === Geometry.box ||
+          entityData?.geometry === Geometry.cone ? (
+          <ShapeProperties entity={entityData} />
         ) : (
           <></>
         )}
