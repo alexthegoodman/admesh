@@ -15,7 +15,7 @@ import styles from "./layout.module.scss";
 import Brand from "@/components/Brand/Brand";
 import Link from "next/link";
 import SLink from "@/components/SLink/SLink";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import graphClient from "@/helpers/GQLClient";
 import { getCurrentUser } from "@/helpers/requests";
@@ -23,6 +23,9 @@ import useSWR from "swr";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  console.info("pathname", pathname);
 
   const [cookies, setCookie, removeCookie] = useCookies(["amUserToken"]);
   const token = cookies.amUserToken;
@@ -43,14 +46,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             alignItems="center"
             flex="1"
           >
-            <View>
+            <div className={styles.headerLeft}>
               <Brand />
-              <Flex direction="row" alignContent="center" gap={20}>
-                <SLink href="/templates">Templates</SLink>
-                <SLink href="/projects">Projects</SLink>
-                <SLink href="/assets">Assets</SLink>
+              <Flex direction="row" alignContent="center" gap={30}>
+                <SLink
+                  className={pathname === "/templates" ? styles.active : ""}
+                  href="/templates"
+                >
+                  Templates
+                </SLink>
+                <SLink
+                  className={pathname === "/projects" ? styles.active : ""}
+                  href="/projects"
+                >
+                  Projects
+                </SLink>
+                <SLink
+                  className={pathname === "/assets" ? styles.active : ""}
+                  href="/assets"
+                >
+                  Assets
+                </SLink>
               </Flex>
-            </View>
+            </div>
 
             <View paddingEnd="size-300">
               <Flex>

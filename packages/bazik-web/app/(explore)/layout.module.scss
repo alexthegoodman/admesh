@@ -6,8 +6,23 @@
   align-items: center;
   height: 60px;
   border-bottom: 1px $lightGrey solid;
-  padding-left: 225px;
+  padding-left: 250px;
   background-color: white;
+
+  .headerLeft {
+    span[role="link"] {
+      text-transform: uppercase;
+      text-decoration: none;
+      color: $darkGrey;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border-bottom: 3px white solid;
+
+      &.active {
+        border-color: $darkGrey;
+      }
+    }
+  }
 }
 
 .footerInner {
