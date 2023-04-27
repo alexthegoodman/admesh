@@ -71,7 +71,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <View paddingEnd="size-300">
-              <Flex>
+              <Flex direction="row" justifyContent="center" alignItems="center">
                 {currentUser?.plan !== "PRO" ? (
                   <Button
                     variant="cta"
@@ -82,6 +82,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 ) : (
                   <Badge variant="positive">Pro User</Badge>
                 )}
+                <View marginStart="size-200">
+                  <SLink href="/settings">Settings</SLink>
+                </View>
               </Flex>
             </View>
           </Flex>

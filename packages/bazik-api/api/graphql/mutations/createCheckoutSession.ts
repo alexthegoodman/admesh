@@ -15,9 +15,29 @@ export const CreateCheckoutSessionMutation = extendType({
         { prisma, currentUser, stripe }: Context,
         x
       ) => {
-        // console.info("priceId", req);
+        let currentUserStripeId = currentUser.stripeCustomerId;
+
+        if (!currentUserStripeId) {
+          const customer = await stripe.customers.create({
+            email: currentUser.email,
+            metadata: {
+              userId: currentUser.id,
+            },
+          });
+          currentUserStripeId = customer.id;
+
+          await prisma.user.update({
+            where: {
+              id: currentUser.id,
+            },
+            data: {
+              stripeCustomerId: currentUserStripeId,
+            },
+          });
+        }
 
         const session = await stripe.checkout.sessions.create({
+          customer: currentUserStripeId,
           billing_address_collection: "auto",
           line_items: [
             {
@@ -31,7 +51,7 @@ export const CreateCheckoutSessionMutation = extendType({
           cancel_url: `${process.env.WEBAPP_DOMAIN}/settings?canceled=true`,
         });
 
-        console.info("session", session);
+        // console.info("session", session);
 
         return session.url;
       },

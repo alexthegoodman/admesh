@@ -49,8 +49,34 @@ export default async function webhook(request: any, response: any) {
       status = subscription.status;
       console.log(`Subscription deleted. Subscription status is ${status}.`);
       console.info("subscription", subscription);
-      // Then define and call a method to handle the subscription deleted.
-      // handleSubscriptionDeleted(subscriptionDeleted);
+
+      const customerD = await stripe.customers.retrieve(subscription.customer);
+
+      console.info("customer data", customerD);
+
+      // TODO: what if user signs up with a different email than the one they used for stripe?
+
+      const relatedUserD = await prisma.user.findFirst({
+        where: {
+          email: customerD.email,
+        },
+      });
+
+      console.info("relatedUser", relatedUserD);
+
+      if (relatedUserD) {
+        await prisma.user.update({
+          where: {
+            id: relatedUserD.id,
+          },
+          data: {
+            stripeSubscriptionId: "",
+            plan: "STARTER",
+          },
+        });
+
+        console.info("plan updated and stripe data saved");
+      }
       break;
     case "customer.subscription.created":
       subscription = event.data.object;
@@ -95,6 +121,8 @@ export default async function webhook(request: any, response: any) {
       status = subscription.status;
       console.log(`Subscription updated. Subscription status is ${status}.`);
       // Then define and call a method to handle the subscription update.
+      console.info("subscription", event, subscription);
+      // NOTE: this runs when user cancels, but customer.subscription.deleted will run when their subscription actually expires
       // handleSubscriptionUpdated(subscription);
       break;
     default:
