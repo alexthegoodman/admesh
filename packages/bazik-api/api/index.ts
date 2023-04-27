@@ -20,9 +20,11 @@ export const startApolloServer = async () => {
 
   // server.applyMiddleware({ app });
   // https://www.apollographql.com/docs/apollo-server/api/express-middleware/#context
+  app.use(cors<cors.CorsRequest>());
+  // app.use();
+
   app.use(
     "/graphql",
-    cors<cors.CorsRequest>(),
     bodyParser.json(),
     expressMiddleware(server, {
       context: async ({ req, res }) => {
@@ -63,8 +65,12 @@ export const startApolloServer = async () => {
   );
 
   // setup stripe and webhooks
-  app.post("/create-checkout-session", createCheckoutSession);
-  app.post("/create-portal-session", createPortalSession);
+  app.post(
+    "/create-checkout-session",
+    bodyParser.json(),
+    createCheckoutSession
+  );
+  app.post("/create-portal-session", bodyParser.json(), createPortalSession);
   app.post("/webhook", express.raw({ type: "application/json" }), webhook);
 
   await new Promise<void>((r) =>

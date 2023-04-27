@@ -3,8 +3,14 @@ import * as React from "react";
 import styles from "./Pricing.module.scss";
 
 import { PricingProps } from "./Pricing.d";
-import { Button, Flex, Heading, View } from "@adobe/react-spectrum";
+import { Button, Flex, Heading, Text, View } from "@adobe/react-spectrum";
 import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
+import graphClient from "@/helpers/GQLClient";
+import { confirmFreemiumMutation } from "@/graphql/user";
+import { graphqlUrl, protocol, restUrl, fullDomainPort } from "@/defs/urls";
+import { getCurrentUser } from "@/helpers/requests";
+import useSWR from "swr";
 
 const pricingItems = [
   {
@@ -29,6 +35,15 @@ const pricingItems = [
 
 const Pricing: React.FC<PricingProps> = ({ signedIn = false }) => {
   const router = useRouter();
+
+  const [cookies, setCookie, removeCookie] = useCookies(["amUserToken"]);
+  const token = cookies.amUserToken;
+
+  graphClient.setupClient(token);
+
+  const { data: currentUser, isLoading } = useSWR("currentUser", () =>
+    getCurrentUser(token)
+  );
 
   return (
     <View padding={100}>
@@ -57,7 +72,59 @@ const Pricing: React.FC<PricingProps> = ({ signedIn = false }) => {
                   </ul>
                 </Flex>
                 {signedIn ? (
-                  <Button variant="cta">Choose Plan</Button>
+                  <>
+                    {currentUser?.plan === item.name.toUpperCase() ? (
+                      <Flex
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        flex="1"
+                      >
+                        <Text>
+                          <strong>Current Plan</strong>
+                        </Text>
+                      </Flex>
+                    ) : (
+                      <Button
+                        variant="cta"
+                        onPress={async () => {
+                          if (item.name === "Starter") {
+                            await graphClient.client?.request(
+                              confirmFreemiumMutation
+                            );
+
+                            window.location.href = `${protocol}${fullDomainPort}/projects`;
+                          } else if (item.name === "Pro") {
+                            let priceId = "";
+                            if (item.frequency === "Monthly") {
+                              priceId = "price_1N1aGFGk0VWbKQ7K3oJnzyUt";
+                            } else if (item.frequency === "Annual") {
+                              priceId = "price_1N1aGFGk0VWbKQ7K5TBV5Pyw";
+                            }
+
+                            const data = await fetch(
+                              `${restUrl}create-checkout-session`,
+                              {
+                                method: "POST",
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                  priceId,
+                                }),
+                              }
+                            );
+
+                            const { url } = await data.json();
+
+                            window.location.href = url;
+                          }
+                        }}
+                      >
+                        Choose Plan
+                      </Button>
+                    )}
+                  </>
                 ) : (
                   <Button variant="cta" onPress={() => router.push("/sign-up")}>
                     Sign Up

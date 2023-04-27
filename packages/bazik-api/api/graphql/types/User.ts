@@ -4,7 +4,7 @@ import { Context } from "../../context";
 export const UserType = objectType({
   name: "User",
   definition(t) {
-    // PRIVATE: id, password, stripeSubscriptionId
+    // PRIVATE: id, password, stripeSubscriptionId, stripeCustomerId
     t.field("email", { type: "String" });
     t.field("role", { type: "String" });
 

@@ -17,7 +17,7 @@ import SceneMgmt from "@/components/SceneMgmt/SceneMgmt";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getCurrentUser } from "@/helpers/requests";
-import useSwR from "swr";
+import useSWR from "swr";
 import { useCookies } from "react-cookie";
 
 // export const metadata = {
@@ -31,7 +31,7 @@ export default function Create() {
   const [cookies, setCookie, removeCookie] = useCookies(["amUserToken"]);
   const token = cookies.amUserToken;
 
-  const { data, isLoading } = useSwR("currentUser", () =>
+  const { data, isLoading } = useSWR("currentUser", () =>
     getCurrentUser(token)
   );
 

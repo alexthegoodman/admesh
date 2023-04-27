@@ -75,6 +75,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    confirmFreemium: NexusGenRootTypes['User'] | null; // User
     registerUser: string; // String!
   }
   Query: { // field return type
@@ -92,6 +93,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    confirmFreemium: 'User'
     registerUser: 'String'
   }
   Query: { // field return type name

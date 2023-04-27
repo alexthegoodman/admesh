@@ -23,3 +23,11 @@ export const currentUserQuery = gql`
     }
   }
 `;
+
+export const confirmFreemiumMutation = gql`
+  mutation ConfirmFreemium {
+    confirmFreemium {
+      email
+    }
+  }
+`;

@@ -8,18 +8,23 @@ export default async function createCheckoutSession(req: any, res: any) {
 
   const { priceId } = req.body;
 
+  // console.info("priceId", req);
+
   const session = await stripe.checkout.sessions.create({
     billing_address_collection: "auto",
     line_items: [
       {
         price: priceId,
         quantity: 1,
+        // currency: "usd",
       },
     ],
     mode: "subscription",
     success_url: `${process.env.WEBAPP_DOMAIN}/projects?success=true&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.WEBAPP_DOMAIN}/settings?canceled=true`,
   });
+
+  console.info("session", session);
 
   //   res.redirect(303, session.url);
   return res.json({ url: session.url });

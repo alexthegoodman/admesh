@@ -10,6 +10,11 @@ export const fullDomain =
 export const fullDomainPort =
   env === "production" ? "bazik.app" : process.env.NEXT_PUBLIC_HOST + ":3000";
 
+export const restUrl =
+  env === "production"
+    ? "https://bazik-api.herokuapp.com/"
+    : `http://localhost:4000/`;
+
 export const graphqlUrl =
   env === "production"
     ? "https://bazik-api.herokuapp.com/graphql"

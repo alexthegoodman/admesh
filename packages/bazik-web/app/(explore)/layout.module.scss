@@ -6,6 +6,16 @@
   align-items: center;
   height: 60px;
   border-bottom: 1px $lightGrey solid;
-  padding-left: 100px;
+  padding-left: 225px;
   background-color: white;
+}
+
+.footerInner {
+  background-color: white;
+  padding: 25px;
+
+  a,
+  span {
+    margin-right: 15px;
+  }
 }
