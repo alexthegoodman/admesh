@@ -14,6 +14,11 @@ import {
 import { useReducer } from "react";
 import SceneCtrls from "@/components/SceneCtrls/SceneCtrls";
 import SceneMgmt from "@/components/SceneMgmt/SceneMgmt";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { getCurrentUser } from "@/helpers/requests";
+import useSwR from "swr";
+import { useCookies } from "react-cookie";
 
 // export const metadata = {
 //   title: "Create Project",
@@ -21,6 +26,26 @@ import SceneMgmt from "@/components/SceneMgmt/SceneMgmt";
 // };
 
 export default function Create() {
+  const router = useRouter();
+
+  const [cookies, setCookie, removeCookie] = useCookies(["amUserToken"]);
+  const token = cookies.amUserToken;
+
+  const { data, isLoading } = useSwR("currentUser", () =>
+    getCurrentUser(token)
+  );
+
+  useEffect(() => {
+    if (!isLoading && !data) {
+      router.push("/login");
+    }
+    if (!isLoading && data) {
+      if (data.plan === "") {
+        router.push("/pick-plan");
+      }
+    }
+  }, [data]);
+
   return (
     <>
       <EditorContext.Provider

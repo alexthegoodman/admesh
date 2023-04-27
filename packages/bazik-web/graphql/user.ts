@@ -11,3 +11,15 @@ export const registerMutation = gql`
     registerUser
   }
 `;
+
+export const currentUserQuery = gql`
+  query CurrentUser {
+    currentUser {
+      email
+      role
+      plan
+      updatedAt
+      createdAt
+    }
+  }
+`;

@@ -57,6 +57,7 @@ export interface NexusGenObjects {
   User: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email?: string | null; // String
+    plan?: string | null; // String
     role?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
@@ -78,10 +79,12 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     authenticate: string | null; // String
+    currentUser: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
+    plan: string | null; // String
     role: string | null; // String
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
@@ -93,10 +96,12 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     authenticate: 'String'
+    currentUser: 'User'
   }
   User: { // field return type name
     createdAt: 'DateTime'
     email: 'String'
+    plan: 'String'
     role: 'String'
     updatedAt: 'DateTime'
   }

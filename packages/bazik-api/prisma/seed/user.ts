@@ -13,6 +13,7 @@ export default async function seedUsers() {
       email,
       role: "USER",
       password: "$2a$12$QG3qjuizq4bb24Gl2hhhSegdv7XHpv0nJrc1Fw/920gOMNSzn80A.", // testing
+      plan: "",
     };
   };
 

@@ -18,11 +18,13 @@ type Mutation {
 
 type Query {
   authenticate: String
+  currentUser: User
 }
 
 type User {
   createdAt: DateTime
   email: String
+  plan: String
   role: String
   updatedAt: DateTime
 }
