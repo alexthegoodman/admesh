@@ -11,6 +11,7 @@ import { confirmFreemiumMutation } from "@/graphql/user";
 import { graphqlUrl, protocol, restUrl, fullDomainPort } from "@/defs/urls";
 import { getCurrentUser } from "@/helpers/requests";
 import useSWR from "swr";
+import { createCheckoutSessionMutation } from "@/graphql/stripe";
 
 const pricingItems = [
   {
@@ -102,22 +103,13 @@ const Pricing: React.FC<PricingProps> = ({ signedIn = false }) => {
                               priceId = "price_1N1aGFGk0VWbKQ7K5TBV5Pyw";
                             }
 
-                            const data = await fetch(
-                              `${restUrl}create-checkout-session`,
-                              {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                  priceId,
-                                }),
-                              }
-                            );
+                            const { createCheckoutSession } =
+                              (await graphClient.client?.request(
+                                createCheckoutSessionMutation,
+                                { priceId }
+                              )) as any;
 
-                            const { url } = await data.json();
-
-                            window.location.href = url;
+                            window.location.href = createCheckoutSession;
                           }
                         }}
                       >

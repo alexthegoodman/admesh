@@ -7,8 +7,6 @@ import { server } from "./server";
 import { context } from "./context";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
-import createCheckoutSession from "./rest/createCheckoutSession";
-import createPortalSession from "./rest/createPortalSession";
 import webhook from "./rest/webhook";
 
 const prisma = new PrismaClient();
@@ -64,13 +62,7 @@ export const startApolloServer = async () => {
     })
   );
 
-  // setup stripe and webhooks
-  app.post(
-    "/create-checkout-session",
-    bodyParser.json(),
-    createCheckoutSession
-  );
-  app.post("/create-portal-session", bodyParser.json(), createPortalSession);
+  // setup stripe webhooks
   app.post("/webhook", express.raw({ type: "application/json" }), webhook);
 
   await new Promise<void>((r) =>

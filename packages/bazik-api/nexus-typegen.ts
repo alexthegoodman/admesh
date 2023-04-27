@@ -76,6 +76,8 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmFreemium: NexusGenRootTypes['User'] | null; // User
+    createCheckoutSession: string | null; // String
+    createPortalSession: string | null; // String
     registerUser: string; // String!
   }
   Query: { // field return type
@@ -94,6 +96,8 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmFreemium: 'User'
+    createCheckoutSession: 'String'
+    createPortalSession: 'String'
     registerUser: 'String'
   }
   Query: { // field return type name
@@ -110,6 +114,11 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createCheckoutSession: { // args
+      priceId: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
