@@ -15,7 +15,7 @@ import { CookieSettings } from "@/defs/CookieSettings";
 import SLink from "../SLink/SLink";
 import FormMessage from "../FormMessage/FormMessage";
 import FormInput from "../FormInput/FormInput";
-import { Button, Flex, View } from "@adobe/react-spectrum";
+import { Button, Flex, Form, View } from "@adobe/react-spectrum";
 
 const AuthForm: React.FC<AuthFormProps> = ({
   onClick = (e) => console.info("Click AuthForm"),
@@ -140,10 +140,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       >
         <h1>{headline}</h1>
         <FormProvider {...methods}>
-          <form
-            className={styles.form}
-            onSubmit={handleSubmit(onSubmit, onError)}
-          >
+          <Form onSubmit={handleSubmit(onSubmit, onError)}>
             <Flex direction="column" gap="size-100">
               <FormMessage type="error" message={formErrorMessage} />
 
@@ -173,7 +170,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 {submitButtonText}
               </Button>
             </Flex>
-          </form>
+          </Form>
         </FormProvider>
         <div className={styles.addtActions}>
           {type === "login" ? (

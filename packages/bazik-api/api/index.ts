@@ -59,7 +59,14 @@ export const startApolloServer = async () => {
     })
   );
 
-  await new Promise<void>((r) => app.listen({ port: process.env.PORT ? process.env.PORT : 4000 }, r));
+  // setup stripe webhooks
+  app.route("/test").get((req, res) => {
+    res.send("Hello World!");
+  });
+
+  await new Promise<void>((r) =>
+    app.listen({ port: process.env.PORT ? process.env.PORT : 4000 }, r)
+  );
 
   console.info(`🚀 Server ready at http://localhost:4000/graphql`);
 };
